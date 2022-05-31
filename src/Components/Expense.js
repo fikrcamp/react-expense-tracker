@@ -2,9 +2,10 @@ import { FaBackspace } from "react-icons/fa";
 
 function Expenses({ items, deleteExpenses }) {
   return (
-    <div className="expense">
+    <div className={items.category === "income" ? "expense-income" : "expense"}>
       <div>💲{items.amount}</div>
       <div>{items.description}</div>
+      <div>{items.category}</div>
       <div>
         <FaBackspace
           className="remove"

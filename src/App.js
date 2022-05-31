@@ -8,29 +8,39 @@ import { useState } from "react";
 
 function App(props) {
   const [expenses, setExpenses] = useState([
-    { id: 1, amount: 200, description: "food" },
-    { id: 2, amount: 250, description: "rent" },
-    { id: 3, amount: 50, description: "gym" },
-    { id: 4, amount: 60, description: "electricity" },
+    { id: 1, amount: 200, description: "food", category: "expense" },
+    { id: 2, amount: 250, description: "rent", category: "income" },
+    { id: 3, amount: 50, description: "gym", category: "income" },
+    { id: 4, amount: 60, description: "electricity", category: "expense" },
   ]);
   const [inputAmount, setInputAmount] = useState("");
   const [inputDesc, setInputDesc] = useState("");
+  const [inputCategory, setInputCategory] = useState("");
   const [isInvalid, setIsInvalid] = useState(true);
 
   // Function that addes new expense
-  const addExpenses = () => {
+  const addExpenses = (amount, description, category) => {
     // this checks if the fields are empty and changes colors
-    if (inputAmount.trim().length === 0 || inputDesc.trim().length === 0) {
+    if (
+      amount.trim().length === 0 ||
+      description.trim().length === 0
+      // expenseCategory.length === 0
+    ) {
       setIsInvalid(false);
       return;
     }
     let id = expenses.length === 0 ? 1 : expenses[expenses.length - 1].id + 1;
     setExpenses([
       ...expenses,
-      { id: id, amount: parseInt(inputAmount), description: inputDesc },
+      {
+        id: id,
+        amount: parseInt(amount),
+        description: description,
+        category: category,
+      },
     ]);
-    setInputAmount("");
-    setInputDesc("");
+    // setInputAmount("");
+    // setInputDesc("");
   };
 
   // Function that removes the selected expense
@@ -39,24 +49,47 @@ function App(props) {
     setExpenses(filteredExpenses);
   };
 
-  // function that calculates the total amount of expenses
-  let amounts = expenses.map((amt) => amt.amount);
-  const totalExpenses = amounts.reduce((acc, val) => {
+  // function that calculates the total amount of income
+  const countIncome = expenses.filter((income) => income.category === "income");
+  let incomeAmounts = countIncome.map((amt) => amt.amount);
+  const incomeTotal = incomeAmounts.reduce((acc, val) => {
     return (acc += val);
-  }, 0);
+  });
+
+  ////////////////////////////////////////////////////////////////
+
+  // function that calculates the total amount of expenses
+  const countExpenses = expenses.filter(
+    (expense) => expense.category === "expense"
+  );
+  let expenseAmounts = countExpenses.map((amt) => amt.amount);
+  const expenseTotal = expenseAmounts.reduce((acc, val) => {
+    return (acc += val);
+  });
+
+  // variable that printes the grand total
+  const grandTotal = incomeTotal - expenseTotal;
+
+  // const totalExpenses = amounts.reduce((acc, val) => {
+  //   return (acc += val);
+  // }, 0);
+
+  // console.log(totalExpenses);
 
   return (
     <div className="App">
       <Header />
       <div className="container">
         <div>
-          <Balance totalExpenses={totalExpenses} />
+          <Balance totalExpenses={grandTotal} />
           <Add
             addExpenses={addExpenses}
             setInputAmount={setInputAmount}
             setInputDesc={setInputDesc}
             inputAmount={inputAmount}
             inputDesc={inputDesc}
+            inputCategory={inputCategory}
+            setinsetInputCategory={setInputCategory}
             isInvalid={isInvalid}
             setIsInvalid={setIsInvalid}
           />
