@@ -52,9 +52,14 @@ function App(props) {
   // function that calculates the total amount of income
   const countIncome = expenses.filter((income) => income.category === "income");
   let incomeAmounts = countIncome.map((amt) => amt.amount);
-  const incomeTotal = incomeAmounts.reduce((acc, val) => {
-    return (acc += val);
-  });
+  let incomeTotal;
+  if (incomeAmounts.length > 0) {
+    incomeTotal = incomeAmounts.reduce((acc, val) => {
+      return (acc += val);
+    });
+  } else {
+    incomeTotal = 0;
+  }
 
   ////////////////////////////////////////////////////////////////
 
@@ -63,18 +68,15 @@ function App(props) {
     (expense) => expense.category === "expense"
   );
   let expenseAmounts = countExpenses.map((amt) => amt.amount);
-  const expenseTotal = expenseAmounts.reduce((acc, val) => {
-    return (acc += val);
-  });
+  let expenseTotal;
+  if (expenseAmounts.length > 0) {
+    expenseTotal = expenseAmounts.reduce((acc, val) => acc + val);
+  } else {
+    expenseTotal = 0;
+  }
 
   // variable that printes the grand total
   const grandTotal = incomeTotal - expenseTotal;
-
-  // const totalExpenses = amounts.reduce((acc, val) => {
-  //   return (acc += val);
-  // }, 0);
-
-  // console.log(totalExpenses);
 
   return (
     <div className="App">
