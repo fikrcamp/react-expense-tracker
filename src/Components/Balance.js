@@ -1,9 +1,9 @@
-function Balance() {
+function Balance({ totalExpenses }) {
   return (
     <div className="balance space">
       <div>Total Expense:</div>
-      <div>
-        <b>💲200</b>
+      <div className={totalExpenses < 0 ? "critical" : "revenue"}>
+        <b>💲{totalExpenses}</b>
       </div>
     </div>
   );
