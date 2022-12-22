@@ -1,9 +1,11 @@
-function Balance() {
+import { toContainHTML } from "@testing-library/jest-dom/dist/matchers";
+
+function Balance(props) {
   return (
     <div className="balance space">
       <div>Total Expense:</div>
       <div>
-        <b>💲200</b>
+        <b>💲{props.total}</b>
       </div>
     </div>
   );
